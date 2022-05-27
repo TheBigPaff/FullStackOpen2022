@@ -1,8 +1,9 @@
 import Part from './Part';
 
 const Content = (props) => {
-    var values = props.exercises.map((value, i) => (
-    <Part part={i < props.parts.length ? props.parts[i] : ""} exercise={value}/>
+    console.log(props)
+    var values = props.parts.map(value => (
+        <Part part={value.name} exercise={value.exercises}/>
     ));
 
     return(<>{values}</>);
