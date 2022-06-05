@@ -40,7 +40,7 @@ const App = () => {
       <h2>Add a new</h2>
         <PersonForm addName={addName} setName={setNewName} setNumber={setNewNumber} name={newName} number={newNumber}/>
       <h2>Numbers</h2>
-      <Persons persons={personsToShow}/>
+        <Persons persons={personsToShow}/>
     </div>
   )
 }
