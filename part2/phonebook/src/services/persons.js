@@ -9,7 +9,13 @@ const getAll = () => {
 }
 
 const create = (newPerson) => {
-    axios.post(baseUrl, newPerson).then(response => response.data)
+    return axios.post(baseUrl, newPerson).then(response => response.data)
+}
+const replace = (personToReplace) => {
+    return axios.put(baseUrl + "/" + personToReplace.id, personToReplace).then(response => response.data)
+}
+const remove = (id) => {
+    return axios.delete(baseUrl + "/" + id).then(response => response.data)
 }
 
-export default { getAll, create }
+export default { getAll, create, remove, replace }

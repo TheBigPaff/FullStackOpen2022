@@ -23,18 +23,30 @@ const App = () => {
       return;
     }
 
-    if(persons.find(el => el.name === newName.trim())){
-      alert(`${newName} is already added to the phonebook`)
+    const personFound = persons.find(el => el.name === newName.trim());
+    if(personFound){
+      if(window.confirm(`${newName} is already added to the phonebook, replace the old number with the new one?`)){
+        personService.replace({...personFound, number: newNumber}).then(createdPerson => {
+          personService.getAll().then(initialPersons => setPersons(initialPersons));
+          // technically could change the local array instead of fetching it another time from the server
+        });
+      }
     }
     else{
-      const newPerson = {name: newName, number: newNumber, id: persons.length + 1}
+      const newPerson = {name: newName, number: newNumber, id: persons[persons.length - 1].id + 1}
       personService.create(newPerson).then(createdPerson => {
         setPersons(persons.concat(createdPerson))
         setNewName("")
         setNewNumber("")
       })
-
     }
+  }
+
+  const deletePerson = (id) => {
+    if(window.confirm(`Delete ${persons.find(el => el.id === id).name}?`))
+    personService.remove(id).then(() => {
+      personService.getAll().then(persons => setPersons(persons))
+    });
   }
 
   const personsToShow = persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
@@ -45,7 +57,7 @@ const App = () => {
       <h2>Add a new</h2>
         <PersonForm addName={addName} setName={setNewName} setNumber={setNewNumber} name={newName} number={newNumber}/>
       <h2>Numbers</h2>
-        <Persons persons={personsToShow}/>
+        <Persons persons={personsToShow} deletePerson={deletePerson}/>
     </div>
   )
 }
